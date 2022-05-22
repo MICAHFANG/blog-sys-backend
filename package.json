@@ -24,6 +24,7 @@
   "_moduleAliases": {
     "@": "./src",
     "routers": "./src/routers",
-    "utils": "./src/utils"
+    "utils": "./src/utils",
+    "models": "./src/db/models"
   }
 }
