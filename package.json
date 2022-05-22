@@ -23,6 +23,7 @@
   },
   "_moduleAliases": {
     "@": "./src",
-    "routers": "./src/routers"
+    "routers": "./src/routers",
+    "utils": "./src/utils"
   }
 }
