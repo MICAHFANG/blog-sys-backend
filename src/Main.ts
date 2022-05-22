@@ -1,16 +1,17 @@
 // import module-alias to use path like @/ or other alias
 import 'module-alias/register'
 import 'dotenv/config'
-
 import express from 'express'
-import { resolve } from 'path'
 import postRouter from 'routers/PostRouter'
-import '@/db/Connect'
+import Connect from '@/db/Connect'
+import logger from 'utils/Logger'
 
 const app = express()
 
 app.use('/post', postRouter)
 
-app.listen(3333, () => {
-  console.log('server is stated at port 3333')
+app.listen(3333, async () => {
+  logger.info('start server at port 3333 success.')
+  await Connect()
+  logger.info('connect mongodb success.')
 })
