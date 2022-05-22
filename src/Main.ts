@@ -5,7 +5,6 @@ import express from 'express'
 import postRouter from 'routers/PostRouter'
 import Connect from '@/db/Connect'
 import logger from 'utils/Logger'
-import PostModel from 'models/PostModel'
 
 const app = express()
 
