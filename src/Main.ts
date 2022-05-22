@@ -15,9 +15,6 @@ app.listen(3333, async () => {
   logger.info('start server at port 3333 success.')
   await Connect()
   logger.info('connect mongodb success.')
-  const newPost = new PostModel({
-    title: 'Hello World',
-    content: 'This is the first post.',
-  })
-  console.log(newPost.print())
+  const posts = await PostModel.findByTitle('Hello World')
+  console.log(posts[0].print())
 })
