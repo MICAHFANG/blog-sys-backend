@@ -8,10 +8,14 @@ import logger from 'utils/Logger'
 
 const app = express()
 
-app.use('/post', postRouter)
+app.use('/api/v1/post', postRouter)
 
 app.listen(3333, async () => {
   logger.info('start server at port 3333 success.')
-  await Connect()
-  logger.info('connect mongodb success.')
+  try {
+    await Connect()
+    logger.info('connect mongodb success.')
+  } catch (e) {
+    logger.error(e)
+  }
 })
