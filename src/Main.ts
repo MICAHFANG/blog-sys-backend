@@ -6,10 +6,9 @@ import postRouter from 'routers/PostRouter'
 import Connect from '@/db/Connect'
 import logger from 'utils/Logger'
 
+const PREFIX = '/api/v1'
 const app = express()
-
-app.use('/api/v1/post', postRouter)
-
+app.use(`${PREFIX}/post`, postRouter)
 app.listen(3333, async () => {
   logger.info('start server at port 3333 success.')
   try {

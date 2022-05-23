@@ -1,3 +1,4 @@
+import { PaginationOptions } from 'types/index.d'
 import { Schema, model, Document, Model, Types, ObjectId } from 'mongoose'
 
 const modelName = 'Post'
@@ -18,6 +19,7 @@ export interface IPostDocument extends IPost, Document {
 export interface IPostModel extends Model<IPostDocument> {
   findByTitle: (title: string) => Promise<IPostDocument[]>
   findByContributor: (name: string) => Promise<IPostDocument[]>
+  pageByDate: (options?: PaginationOptions) => Promise<IPostDocument[]>
 }
 
 const schema = new Schema<IPostDocument, IPostModel>({
@@ -43,6 +45,13 @@ const schema = new Schema<IPostDocument, IPostModel>({
 
 schema.statics.findByTitle = function (title: string) {
   return this.find({ title: new RegExp(title, 'i') })
+}
+
+schema.statics.pageByDate = function (
+  { current, size }: PaginationOptions = { current: 1, size: 10 },
+) {
+  const offset = size * (current - 1)
+  return this.find().sort('-createdAt').skip(offset).limit(size)
 }
 
 schema.statics.findByContributor = function (name: string) {
