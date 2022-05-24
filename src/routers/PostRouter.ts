@@ -17,8 +17,11 @@ postRouter.get('/page', async (req, res) => {
 })
 
 // 指定id查询
-postRouter.get('/:id', (req, res) => {
-  res.send(req.params)
+postRouter.get('/:id', async (req, res) => {
+  const { id } = req.params
+  const doc = await PostModel.findById(id).lean()
+  const r = R.okay().setData(doc)
+  res.json(r)
 })
 
 export default postRouter
