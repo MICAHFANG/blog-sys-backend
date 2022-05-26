@@ -27,6 +27,7 @@
     "routers": "./src/routers",
     "utils": "./src/utils",
     "models": "./src/db/models",
-    "types": "./src/types"
+    "types": "./src/types",
+    "services": "./src/services"
   }
 }

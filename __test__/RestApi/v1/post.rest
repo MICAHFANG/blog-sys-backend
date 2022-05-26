@@ -1,0 +1,11 @@
+@baseUrl = http://localhost:3333/api/v1/post
+GET {{baseUrl}}/page HTTP/1.1
+
+###
+
+GET {{baseUrl}}/page/10/1 HTTP/1.1
+
+###
+
+// page by contributor
+GET {{baseUrl}}/contributor/me/10/1 HTTP/1.1

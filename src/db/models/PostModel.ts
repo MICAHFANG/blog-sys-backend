@@ -1,13 +1,20 @@
-import { PaginationOptions } from 'types/index.d'
-import { Schema, model, Document, Model, Types, ObjectId } from 'mongoose'
-import moment from 'moment'
-import { DATETIME_FORMAT_STRING } from 'utils/Const'
+import { PaginationResult, PaginationOptions } from '@/types'
+import {
+  Schema,
+  model,
+  Document,
+  Model,
+  Types,
+  ObjectId,
+  Query,
+} from 'mongoose'
+import pagination from 'utils/Pagination'
 
 const modelName = 'Post'
 
 export interface IPost {
   title: string
-  contributor: ObjectId
+  contributor: Types.ObjectId
   content: string
   likeCount?: number
   createdAt: Date
@@ -18,10 +25,16 @@ export interface IPostDocument extends IPost, Document {
   print: () => string
 }
 
+export type PaginationPostResult = PaginationResult<IPostDocument>
+
 export interface IPostModel extends Model<IPostDocument> {
   findByTitle: (title: string) => Promise<IPostDocument[]>
   findByContributor: (name: string) => Promise<IPostDocument[]>
-  pageByDate: (options?: PaginationOptions) => Promise<IPostDocument[]>
+  pageByDate: (options?: PaginationOptions) => Promise<PaginationPostResult>
+  pageByContributor: (
+    constructor: string,
+    options: PaginationOptions,
+  ) => Promise<PaginationPostResult>
 }
 
 const schema = new Schema<IPostDocument, IPostModel>({
@@ -30,7 +43,7 @@ const schema = new Schema<IPostDocument, IPostModel>({
     required: true,
   },
   contributor: {
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     immutable: true,
   },
   content: String,
@@ -49,14 +62,41 @@ schema.statics.findByTitle = function (title: string) {
   return this.find({ title: new RegExp(title, 'i') })
 }
 
-schema.statics.pageByDate = function (
+schema.statics.pageByDate = async function (
   { current, size }: PaginationOptions = { current: 1, size: 10 },
-) {
-  const offset = size * (current - 1)
-  return this.find().sort('-createdAt').skip(offset).limit(size)
+): Promise<PaginationResult<IPostDocument>> {
+  const globalSize = await this.count()
+  const paginationResult = pagination<IPostDocument>(
+    { current, size },
+    globalSize,
+  )
+  const list = await this.find()
+    .sort('-createdAt')
+    .skip(paginationResult.offset)
+    .limit(size)
+  paginationResult.setList(list)
+  return paginationResult
 }
 
-schema.statics.findByContributor = function (name: string) {
+schema.statics.pageByContributor = async function (
+  constructor: string,
+  { current, size }: PaginationOptions,
+): Promise<PaginationPostResult> {
+  const globalSize = await this.count()
+  const paginationResult = pagination<IPostDocument>(
+    { current, size },
+    globalSize,
+  )
+  paginationResult.setList(
+    await this.find({ contributor: new RegExp(constructor, 'i') })
+      .sort('-createdAt')
+      .skip(paginationResult.offset)
+      .limit(size),
+  )
+  return paginationResult
+}
+
+schema.statics.findByConstructor = function (name: string) {
   return this.find({ contributor: new RegExp(name, 'i') })
 }
 

@@ -1,27 +1,27 @@
-import R from 'utils/R'
+/**
+ * @author Micah Fang
+ * @date   2022-05-24 15:31:42
+ */
 import { Router } from 'express'
-import PostModel, { IPostDocument } from '@/db/models/PostModel'
-import { PaginationResult } from '@/types'
+import {
+  pagingQuery,
+  paginationQueryByContributor,
+  queryById,
+  topTen,
+} from 'services/PostService'
 
 const postRouter = Router()
 
 // 查询前十条post
-postRouter.get('/page', async (req, res) => {
-  const posts = await PostModel.pageByDate()
-  const result = {
-    list: posts,
-    hasNext: false,
-  } as PaginationResult<IPostDocument>
-  const r = R.okay().setData(result)
-  res.json(r)
-})
+postRouter.get('/page', topTen)
+
+// 分页查询，数量和页数
+postRouter.get('/page/:size/:current', pagingQuery)
 
 // 指定id查询
-postRouter.get('/:id', async (req, res) => {
-  const { id } = req.params
-  const doc = await PostModel.findById(id).lean()
-  const r = R.okay().setData(doc)
-  res.json(r)
-})
+postRouter.get('/:id', queryById)
+
+// 按贡献者分页查询
+// postRouter.get('/contributor/:contributor/:size/:current', paginationQueryByContributor)
 
 export default postRouter
