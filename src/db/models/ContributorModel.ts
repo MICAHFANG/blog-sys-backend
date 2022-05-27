@@ -9,7 +9,7 @@ const modelName = 'Contributor'
 export interface IContributor {
   name: String
   email: String
-  joinedAt: Date
+  createdAt: Date
 }
 
 export interface IContributorDocument extends IContributor, mongoose.Document {}
@@ -26,7 +26,7 @@ const schema = new Schema({
   email: {
     type: String,
   },
-  joinedAt: {
+  createdAt: {
     type: Date,
     default: () => Date.now(),
   },

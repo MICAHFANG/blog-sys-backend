@@ -4,7 +4,7 @@
  * 贡献者与Post关系Model
  */
 
-const modelName = ''
+const modelName = 'contributor_post_relation'
 
 import { ObjectId, Schema, Document, model, Types } from 'mongoose'
 import ContributorModel from './ContributorModel'
@@ -15,6 +15,7 @@ export interface IContributorPostRelation {
   postObjectId: ObjectId
   isAuthor: Boolean
   contributionPoints: Number
+  createdAt: Date
 }
 
 export interface IContributorPostRelationModel
@@ -43,6 +44,10 @@ const schema = new Schema<IContributorPostRelation>({
   isAuthor: {
     type: Boolean,
     default: false,
+  },
+  createdAt: {
+    type: Date,
+    default: () => Date.now(),
   },
 })
 

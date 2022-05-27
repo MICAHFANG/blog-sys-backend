@@ -1,4 +1,4 @@
-import { createContributor } from './../services/ContributorService'
+import { createContributor } from 'services/ContributorService'
 import { Router } from 'express'
 
 const ContributorRouter = Router()

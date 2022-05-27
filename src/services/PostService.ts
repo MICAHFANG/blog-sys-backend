@@ -5,6 +5,7 @@
 
 import { Request, Response } from 'express'
 import ContributorModel from 'models/ContributorModel'
+import ContributorPostRelationModel from 'models/ContributorPostRelationModel'
 import PostModel from 'models/PostModel'
 import R from 'utils/R'
 
@@ -63,10 +64,19 @@ export async function createPost(
   res: Response,
 ) {
   const { title, content, author } = req.body
-  // // 检查author是否存在
-  const authorObject = await ContributorModel.getByName(author)
-  if (!authorObject) {
-    return authorNotExist(author, res)
+  // 检查author是否存在
+  const authorDoc = await ContributorModel.getByName(author)
+  if (!authorDoc) return authorNotExist(author, res)
+  const postDoc = await PostModel.create({ title, content })
+  // 创建post与constructor的关联表
+  const cpr = await ContributorPostRelationModel.create({
+    postObjectId: postDoc.id,
+    contributorObjectId: authorDoc.id,
+    contributionPoints: 99,
+    isAuthor: true,
+  })
+  if (authorDoc && postDoc && cpr) {
+    res.json(R.okay({ postId: postDoc.id, title, author }))
   }
 }
 
