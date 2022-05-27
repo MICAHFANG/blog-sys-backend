@@ -8,6 +8,7 @@ import {
   paginationQueryByContributor,
   queryById,
   topTen,
+  createPost,
 } from 'services/PostService'
 
 const postRouter = Router()
@@ -23,5 +24,8 @@ postRouter.get('/:id', queryById)
 
 // 按贡献者分页查询
 // postRouter.get('/contributor/:contributor/:size/:current', paginationQueryByContributor)
+
+// 创建post
+postRouter.put('/', createPost)
 
 export default postRouter

@@ -2,7 +2,9 @@
  * @author Micah Fang
  * @date   2022-05-24 15:31:40
  */
+
 import { Request, Response } from 'express'
+import ContributorModel from 'models/ContributorModel'
 import PostModel from 'models/PostModel'
 import R from 'utils/R'
 
@@ -47,5 +49,28 @@ export async function paginationQueryByContributor(
     current: parseInt(current, 10),
   })
   const r = R.okay().setData(paginationResult)
+  res.json(r)
+}
+
+// 创建post
+export type PostCreatorReqBodyGeneric = {
+  title: string
+  content: string
+  author: string
+}
+export async function createPost(
+  req: Request<{}, any, PostCreatorReqBodyGeneric>,
+  res: Response,
+) {
+  const { title, content, author } = req.body
+  // // 检查author是否存在
+  const authorObject = await ContributorModel.getByName(author)
+  if (!authorObject) {
+    return authorNotExist(author, res)
+  }
+}
+
+function authorNotExist(name: string, res: Response) {
+  const r = R.error(`author "${name}" is not exist`, 10001)
   res.json(r)
 }

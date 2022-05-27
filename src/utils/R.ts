@@ -25,7 +25,7 @@ export default class R {
   static error(message: string): R
   static error(message: string, code: number): R
   static error(message?: string, code?: number): R {
-    const r = new R()
+    const r = new R({ data: null, code: 1, message: 'error' })
     if (message) r.setMessage(message)
     if (code) r.setCode(code)
     return r

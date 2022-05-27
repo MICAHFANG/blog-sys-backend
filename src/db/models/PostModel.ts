@@ -42,10 +42,6 @@ const schema = new Schema<IPostDocument, IPostModel>({
     type: String,
     required: true,
   },
-  contributor: {
-    type: Schema.Types.ObjectId,
-    immutable: true,
-  },
   content: String,
   likeCount: Number,
   createdAt: {
