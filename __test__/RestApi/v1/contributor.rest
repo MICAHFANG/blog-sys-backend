@@ -1,0 +1,9 @@
+@baseUrl = http://localhost:3333/api/v1/contributor
+
+PUT {{baseUrl}}/
+Content-Type: application/json
+
+{
+  "name":  "Micah",
+  "email": "micahfang@skiff.com"
+}

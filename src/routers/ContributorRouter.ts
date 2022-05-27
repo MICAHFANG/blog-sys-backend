@@ -1,3 +1,4 @@
+import { createContributor } from './../services/ContributorService'
 import { Router } from 'express'
 
 const ContributorRouter = Router()
@@ -9,6 +10,6 @@ ContributorRouter.get('/:postObjectId')
 ContributorRouter.get('/all/:postObjectId')
 
 // 添加贡献者
-ContributorRouter.put('/')
+ContributorRouter.put('/', createContributor)
 
 export default ContributorRouter

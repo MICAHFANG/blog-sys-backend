@@ -10,7 +10,7 @@ import bodyParser from 'body-parser'
 
 const PREFIX = '/api/v1'
 const app = express()
-app.use(bodyParser())
+app.use(bodyParser.json())
 app.use(`${PREFIX}/post`, postRouter)
 app.use(`${PREFIX}/contributor`, ContributorRouter)
 app.listen(3333, async () => {
