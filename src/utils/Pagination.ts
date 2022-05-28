@@ -4,10 +4,12 @@ import {
   PaginationResult as IPaginationResult,
 } from '@/types'
 
-class PaginationResult<T extends Document> implements IPaginationResult<T> {
+export class PaginationResult<T extends Document>
+  implements IPaginationResult<T>
+{
   size: number
   current: number
-  offset: number
+  offset?: number
   global: number
   next: number | undefined
   prev: number | undefined
@@ -39,7 +41,7 @@ function pagination<T extends Document>(
 ): PaginationResult<T> {
   const offset = size * (current - 1)
   const global = Math.ceil(globalCount / size)
-  const hasNext = global > current * size
+  const hasNext = globalCount > current * size
   const hasPrev = current > 1
   const paginationResult = new PaginationResult(
     {

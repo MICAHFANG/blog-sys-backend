@@ -1,3 +1,5 @@
+import pagination, { PaginationResult } from './Pagination'
+
 export interface IROptions {
   data?: any
   code: number
@@ -46,6 +48,10 @@ export default class R {
       const { key, value } = data
       this.data[key] = value
     } else {
+      // if data instanceof Patination, hide field offset
+      if (data instanceof PaginationResult) {
+        delete data.offset
+      }
       this.data = Object.assign(this.data, data)
     }
     return this

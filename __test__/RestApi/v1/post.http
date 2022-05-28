@@ -2,7 +2,7 @@
 
 GET {{baseUrl}}/page HTTP/1.1
 ###
-GET {{baseUrl}}/page/10/1 HTTP/1.1
+GET {{baseUrl}}/page/2/3 HTTP/1.1
 ### create a post
 PUT {{baseUrl}}/ HTTP/1.1
 Content-Type: application/json

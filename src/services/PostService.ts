@@ -22,7 +22,7 @@ export async function pagingQuery(
   res: Response,
 ) {
   let { size, current } = req.params
-  current = current && '1'
+  current = current || '1'
   const paginationResult = await PostModel.pageByDate({
     current: parseInt(current, 10),
     size: parseInt(size, 10),

@@ -1,13 +1,5 @@
 import { PaginationResult, PaginationOptions } from '@/types'
-import {
-  Schema,
-  model,
-  Document,
-  Model,
-  Types,
-  ObjectId,
-  Query,
-} from 'mongoose'
+import { Schema, model, Document, Model, Types } from 'mongoose'
 import pagination from 'utils/Pagination'
 
 const modelName = 'Post'
@@ -68,7 +60,7 @@ schema.statics.pageByDate = async function (
   )
   const list = await this.find()
     .sort('-createdAt')
-    .skip(paginationResult.offset)
+    .skip(paginationResult.offset as number)
     .limit(size)
   paginationResult.setList(list)
   return paginationResult
@@ -86,7 +78,7 @@ schema.statics.pageByContributor = async function (
   paginationResult.setList(
     await this.find({ contributor: new RegExp(constructor, 'i') })
       .sort('-createdAt')
-      .skip(paginationResult.offset)
+      .skip(paginationResult.offset as number)
       .limit(size),
   )
   return paginationResult
